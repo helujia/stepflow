@@ -36,6 +36,15 @@ const state = {
 
 const icon = (name, cls = 'h-4 w-4') => `<i data-lucide="${name}" class="${cls}"></i>`;
 
+function renderCurrentDate() {
+  const now = new Date();
+  const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+  const dateLabel = document.querySelector('#today-date');
+  if (dateLabel) {
+    dateLabel.textContent = `${now.getMonth() + 1} 月 ${now.getDate()} 日 · 星期${weekdays[now.getDay()]}`;
+  }
+}
+
 function hydrateIcons() {
   if (window.lucide) window.lucide.createIcons({ attrs: { 'stroke-width': 1.8 } });
 }
@@ -329,8 +338,10 @@ document.addEventListener('keydown', event => { if (event.key === 'Escape') clos
 
 renderTasks();
 renderPool();
+renderCurrentDate();
 showPage('today');
 hydrateIcons();
+window.setInterval(renderCurrentDate, 60 * 1000);
 
 if (document.modelContext?.registerTool) {
   document.modelContext.registerTool({
